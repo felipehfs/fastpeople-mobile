@@ -14,6 +14,16 @@ export const REGISTER_USER = gql`
     }
 `;
 
+export const CREATE_PROFILE = gql`
+    mutation createProfile($avatar: String!, $online: Boolean){
+        newProfile(avatar: $avatar, online: $online) {
+            id
+            avatar
+            online
+        }
+    }
+`;
+
 export const MY_PROFILE = gql`
     query {
         profile:myProfile {

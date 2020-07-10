@@ -10,9 +10,9 @@ import { styles } from './styles';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 
-import { MY_PROFILE } from '../../api/graphql';
+import { MY_PROFILE, CREATE_PROFILE } from '../../api/graphql';
 
 export default function Profile() {
     const [online, setOnline] = useState(false);
@@ -31,9 +31,20 @@ export default function Profile() {
         }
     });
 
+    const [saveProfile] = useMutation(CREATE_PROFILE, {});
+
     const handleLogout = async () => {
         await AsyncStorage.clear()
         navigation.navigate("login");
+    }
+
+    const handleSave = () => {
+        const values = { variables: {
+            online,
+            avatar,
+        }};
+        
+        saveProfile(values);
     }
 
     return (
@@ -70,7 +81,9 @@ export default function Profile() {
                 </View>
            </View>
            <View style={styles.footer}>
-              <TouchableOpacity style={styles.btn}>
+              <TouchableOpacity 
+                onPress={handleSave}
+                style={styles.btn}>
                   <Text style={styles.btnText}>Salvar</Text>
               </TouchableOpacity>
            </View>
